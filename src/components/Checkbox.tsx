@@ -56,8 +56,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         {/* checkbox */}
         <div
           className={clsx(
-            "absolute w-full h-full flex justify-center items-center top-0 border-[#E1E1E1] border-[1.5px] rounded-md visible-box",
-            !isChecked && "group-hover:border-[#BDBDBD]",
+            "absolute w-full h-full flex justify-center items-center top-0 border-[#E1E1E1] border-[1.5px] rounded-md visible-box group-hover:border-[#BDBDBD]",
             isChecked &&
               "bg-[#2369F6] group-hover:bg-[#2369f6ce] group-hover:border-white border-white"
           )}
