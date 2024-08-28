@@ -1,11 +1,11 @@
 import clsx from "clsx";
-import React, { ChangeEvent, SetStateAction, useEffect, useState } from "react";
+import React, { SetStateAction, useEffect, useState } from "react";
 import { IoCheckmarkOutline } from "react-icons/io5";
 
 //
 interface CheckboxProps {
   lable: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onChange: () => void;
   isAllChecked?: boolean;
   setIsAllChecked?: React.Dispatch<SetStateAction<boolean>>;
   isAllChecker?: boolean;
@@ -26,6 +26,11 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       setIsChecked(isAllChecked);
     }
   }, [isAllChecked]);
+
+  //   running onChange wheneven isChecked changes
+  useEffect(() => {
+    onChange();
+  }, [isChecked]);
 
   const handleClick = () => {
     // Update the parent state if available
@@ -48,21 +53,13 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         {lable}
       </label>
       <div className="relative w-[25px] h-[25px]  overflow-hidden">
-        {/* invisible checkbox  */}
-        <input
-          id={lable}
-          type="checkbox"
-          className="absolute w-0 h-0"
-          onChange={onChange}
-          checked={isChecked}
-        />
-        {/* visible box  */}
+        {/* checkbox */}
         <div
           className={clsx(
             "absolute w-full h-full flex justify-center items-center top-0 border-[#E1E1E1] border-[1.5px] rounded-md visible-box",
             !isChecked && "group-hover:border-[#BDBDBD]",
             isChecked &&
-              "bg-[#2369F6] group-hover:bg-[#2369f6e0] group-hover:border-white border-white"
+              "bg-[#2369F6] group-hover:bg-[#2369f6ce] group-hover:border-white border-white"
           )}
         >
           <IoCheckmarkOutline
