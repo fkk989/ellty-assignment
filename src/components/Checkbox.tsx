@@ -1,48 +1,56 @@
 import clsx from "clsx";
-import React, { SetStateAction, useEffect, useState } from "react";
+import React, { SetStateAction, useEffect } from "react";
 import { IoCheckmarkOutline } from "react-icons/io5";
 
 //
 interface CheckboxProps {
+  isChecked: boolean;
+  setIsChecked: React.Dispatch<
+    SetStateAction<
+      {
+        name: string;
+        isChecked: boolean;
+      }[]
+    >
+  >;
   lable: string;
   onChange: () => void;
-  isAllChecked?: boolean;
-  setIsAllChecked?: React.Dispatch<SetStateAction<boolean>>;
   isAllChecker?: boolean;
 }
 //
 
 export const Checkbox: React.FC<CheckboxProps> = ({
+  isChecked,
+  setIsChecked,
   lable,
   onChange,
-  isAllChecked,
-  setIsAllChecked,
   isAllChecker,
 }) => {
-  const [isChecked, setIsChecked] = useState(false);
-
-  useEffect(() => {
-    if (typeof isAllChecked !== "undefined") {
-      setIsChecked(isAllChecked);
-    }
-  }, [isAllChecked]);
-
   //   running onChange wheneven isChecked changes
   useEffect(() => {
     onChange();
   }, [isChecked]);
 
   const handleClick = () => {
-    // Update the parent state if available
-    if (
-      typeof isAllChecked !== "undefined" &&
-      typeof setIsAllChecked !== "undefined" &&
-      isAllChecker
-    ) {
-      setIsAllChecked((crnt) => !crnt);
+    if (isAllChecker) {
+      setIsChecked((crntData) => {
+        const tempPageData = crntData.map((pageData) => ({
+          ...pageData,
+          isChecked: !isChecked,
+        }));
+        return tempPageData;
+      });
       return;
     }
-    setIsChecked((crnt) => !crnt);
+
+    //  if its not all checker checkbox
+    setIsChecked((crntData) =>
+      crntData.map((pageData) =>
+        pageData.name === lable
+          ? { ...pageData, isChecked: !pageData.isChecked }
+          : pageData
+      )
+    );
   };
   return (
     <div
